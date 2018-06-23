@@ -17,16 +17,19 @@ void delay(unsigned int timeout)
     }
 }
 
+/*chuyen ki tu sang so*/
 int chuyenso (char c)
 {
 	return (int)c - 48;
 }
+
+/*chuyen so sang ki tu*/
 char chuyenchu(int s)
 {
 	return (char)s + 48;
 }
 
-/*send int*/
+/*ham truyen so */
 void send_int(int s)
 {
 	int ng, d;
@@ -93,14 +96,7 @@ void main(void)
 		{
 			if(0x0D != rx_data) // so
 			{
-				for (int i = 0; i < 10; i++)
-				{
-					if (rx_data == a[i])
-					{
-						m = i;
-						break;
-					}
-				}
+				m = chuyenso(rx_data); //doi ki tu sang so
 				value = value*10 + m;
 				usart_send_byte(rx_data);
 			}
