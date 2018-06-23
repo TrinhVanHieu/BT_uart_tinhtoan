@@ -2,6 +2,8 @@
 
 
 /*************************************************************************************************/
+char a[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+int m;
 
 void delay(unsigned int timeout)
 {
@@ -15,25 +17,72 @@ void delay(unsigned int timeout)
     }
 }
 
-void Tong(int a, int b)
+/*send int*/
+void send_int(int s)
+{
+	int ng, d;
+	int *a;
+	char *b;
+	int k = 0;
+	int l = 0;
+	while (0 != s)
+	{
+		ng = s / 10; 
+		d = s % 10;
+		*(a + k) = d;
+		k++;
+		s = ng;
+	}
+	for (int i = k - 1; i >= 0; i--)
+	{
+		*(b + l) = (*(a + i) + 48); //doi so sang chu
+		l++;
+	}
+	for (int i = 0; i < l; i++) usart_send_byte(*(b + i));
+}
+/*addition */
+void Add(int a, int b)
 {
 	int s = a + b;
-	usart_send_string("\r\nTong 2 so vua nhap la: \t");
-	usart_send_byte(s);
+	usart_send_string("\r\nTong hai so vua nhap la: ");
+	send_int(s);
 }
 
-char a[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-int m, n;
-unsigned int j = 0;
-int s = 0; 
+/*subtraction*/
+void Sub(int a, int b)
+{
+	int s = a - b;
+	usart_send_string("\r\nHieu hai so vua nhap la: ");
+	send_int(s);
+}
+
+/*multiplication*/
+void Mul(int a, int b)
+{
+	int s = a * b;
+	usart_send_string("\r\nTich hai so vua nhap la: ");
+	send_int(s);
+}
+
+/*division*/
+void Div(int a, int b)
+{
+	int ng, d;
+	ng = a/b;
+	d = a%b;
+	usart_send_string("\r\nKet qua phep chia duoc: ");
+	send_int(ng);
+	usart_send_string("\r\nVa du: ");
+	send_int(d);
+}
 void main(void)
 {
-	unsigned char tham_so = 0;
-	unsigned char xx_tinh_toan = 0;
+	unsigned char state = 0;
+	unsigned char flag = 0;
 	unsigned int value = 0;
 	unsigned int value_sh_1 = 0;
 	unsigned int value_sh_2 = 0;
-	unsigned int tong = 0;
+
 	
     system_init();
     enabled_clock();
@@ -65,29 +114,31 @@ void main(void)
 			}
 			else // enter
 			{
-				if (0 == tham_so)
+				if (0 == state)
 				{
 					value_sh_1 = value;
 					usart_send_string("\r\nNhap so thu hai: ");
-					tham_so = 1;
+					state = 1;
 				}
 				else
 				{
 					value_sh_2 = value;
 					usart_send_string("\r\nNhap so thu nhat: ");
-					tham_so = 0;
-					xx_tinh_toan = 1;
+					state = 0;
+					flag = 1;
 				}
 				value = 0;
 			}
 			rx_data = 0;
 		}
-		if (xx_tinh_toan)
+		if (flag)
 		{
-			tong = value_sh_1 + value_sh_2;
-			xx_tinh_toan = 0;
+			Add(value_sh_1, value_sh_2);
+			Sub(value_sh_1, value_sh_2);
+			Mul(value_sh_1, value_sh_2);
+			//Div(value_sh_1, value_sh_2);
+			flag = 0;
 		}
 	}
-	usart_send_string("\r\nThoat thanh cong roi:");
 }
 
