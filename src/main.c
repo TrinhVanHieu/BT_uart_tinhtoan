@@ -17,28 +17,30 @@ void delay(unsigned int timeout)
     }
 }
 
+int chuyenso (char c)
+{
+	return (int)c - 48;
+}
+char chuyenchu(int s)
+{
+	return (char)s + 48;
+}
+
 /*send int*/
 void send_int(int s)
 {
 	int ng, d;
-	int *a;
-	char *b;
+	char *a;
 	int k = 0;
-	int l = 0;
 	while (0 != s)
 	{
-		ng = s / 10; 
-		d = s % 10;
-		*(a + k) = d;
+		ng = s/10;
+		d = s%10;
+		*(a + k) = chuyenchu(d);  //chuyen so du thanh ki tu -> luu trong con tro a
 		k++;
 		s = ng;
 	}
-	for (int i = k - 1; i >= 0; i--)
-	{
-		*(b + l) = (*(a + i) + 48); //doi so sang chu
-		l++;
-	}
-	for (int i = 0; i < l; i++) usart_send_byte(*(b + i));
+	for (int i = (k - 1); i >= 0; i--) usart_send_byte(*(a + i)); //truyen lan luot tung ky tu
 }
 /*addition */
 void Add(int a, int b)
@@ -55,7 +57,6 @@ void Sub(int a, int b)
 	usart_send_string("\r\nHieu hai so vua nhap la: ");
 	send_int(s);
 }
-
 /*multiplication*/
 void Mul(int a, int b)
 {
@@ -65,16 +66,7 @@ void Mul(int a, int b)
 }
 
 /*division*/
-void Div(int a, int b)
-{
-	int ng, d;
-	ng = a/b;
-	d = a%b;
-	usart_send_string("\r\nKet qua phep chia duoc: ");
-	send_int(ng);
-	usart_send_string("\r\nVa du: ");
-	send_int(d);
-}
+
 void main(void)
 {
 	unsigned char state = 0;
@@ -123,7 +115,7 @@ void main(void)
 				else
 				{
 					value_sh_2 = value;
-					usart_send_string("\r\nNhap so thu nhat: ");
+					
 					state = 0;
 					flag = 1;
 				}
@@ -136,8 +128,8 @@ void main(void)
 			Add(value_sh_1, value_sh_2);
 			Sub(value_sh_1, value_sh_2);
 			Mul(value_sh_1, value_sh_2);
-			//Div(value_sh_1, value_sh_2);
-			flag = 0;
+			usart_send_string("\r\nNhap so thu nhat: ");
+			flag = 0; 
 		}
 	}
 }
