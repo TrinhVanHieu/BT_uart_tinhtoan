@@ -20,7 +20,7 @@ FILE_TO_LINK	:= $(OUTPUT_PATH)/clock.o $(OUTPUT_PATH)/gpio.o $(OUTPUT_PATH)/inte
 
 CC_OPT			:= -march=armv6-m -mcpu=cortex-m0 -c -O0 -g -mthumb -I$(INC_DIR)
 ASM_OPT			:= -march=armv6-m -mcpu=cortex-m0 -c -mthumb
-LD_OPT			:= -T $(LINKER_FILE) -Map $(OUTPUT_PATH)/$(PROJ_NAME).map $(FILE_TO_LINK)
+LD_OPT			:= -T $(LINKER_FILE) -Map $(OUTPUT_PATH)/$(PROJ_NAME).map $(FILE_TO_LINK)  -L E:/PhanMemC_Mcu/GccCompiler/7_2017-q4-major/lib/gcc/arm-none-eabi/7.2.1/thumb/v6-m -lgcc
 
 $(OUTPUT_PATH)/clock.o: $(SRC_DIR)/clock.c
 	@echo "compile $(SRC_DIR)/clock.c file"

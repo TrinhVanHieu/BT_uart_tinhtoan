@@ -50,6 +50,7 @@ void Add(int a, int b)
 {
 	int s = a + b;
 	usart_send_string("\r\nTong hai so vua nhap la: ");
+	delay(0xff);
 	send_int(s);
 }
 
@@ -58,6 +59,7 @@ void Sub(int a, int b)
 {
 	int s = a - b;
 	usart_send_string("\r\nHieu hai so vua nhap la: ");
+	delay(0xff);
 	send_int(s);
 }
 /*multiplication*/
@@ -65,6 +67,7 @@ void Mul(int a, int b)
 {
 	int s = a * b;
 	usart_send_string("\r\nTich hai so vua nhap la: ");
+	delay(0xff);
 	send_int(s);
 }
 
@@ -122,8 +125,8 @@ void main(void)
 		if (flag)
 		{
 			Add(value_sh_1, value_sh_2);
-			Sub(value_sh_1, value_sh_2);
-			Mul(value_sh_1, value_sh_2);
+			//Sub(value_sh_1, value_sh_2);
+			//Mul(value_sh_1, value_sh_2);
 			usart_send_string("\r\nNhap so thu nhat: ");
 			flag = 0; 
 		}
